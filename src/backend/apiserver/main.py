@@ -12,7 +12,7 @@ from pydantic import BaseModel
 load_dotenv()
 
 app = FastAPI()
-db = redis.StrictRedis(host=os.environ.get("REDIS_HOST"))
+db = redis.StrictRedis(host="localhost")
 
 
 class Reqeust(BaseModel):
@@ -25,7 +25,7 @@ async def create_item(req: Reqeust):
     req_dict = req.dict()
     job_id = str(uuid.uuid4())
     job_dict = {"id": job_id, "image": req_dict["image"], "style": req_dict["style"]}
-    db.rpush(os.environ.get("IMAGE_QUEUE"), json.dumps(job_dict))
+    db.rpush("job_queue", json.dumps(job_dict))
     data = {"status": "submitted", "id": job_id}
     return data
 

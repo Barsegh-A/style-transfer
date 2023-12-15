@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-from utils import gram_matrix
+from .utils import gram_matrix
 
 
 class ContentLoss(nn.Module):

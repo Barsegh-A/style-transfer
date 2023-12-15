@@ -6,7 +6,6 @@ import numpy as np
 from glob import glob
 
 # For Image reading and visualization
-import matplotlib.pyplot as plt
 from PIL import Image
 
 # For Image Optimization
@@ -20,8 +19,8 @@ from torchvision.models import vgg19, VGG19_Weights
 import torchvision.transforms as transforms
 from torch.backends import cudnn
 
-from utils import get_input_optimizer, image_preparer
-from modules import ContentLoss, StyleLoss, Normalization
+from .utils import get_input_optimizer, image_preparer
+from .modules import ContentLoss, StyleLoss, Normalization
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 torch.set_default_device(device)

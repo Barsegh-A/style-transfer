@@ -1,1 +1,1 @@
-from styletransfer.model.model import style_transfer
+from .model import style_transfer
