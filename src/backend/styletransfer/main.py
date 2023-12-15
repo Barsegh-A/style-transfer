@@ -1,7 +1,6 @@
 import base64
 import json
 import os
-import sys
 import time
 
 import redis
@@ -37,7 +36,7 @@ def main():
             # TODO: add model predict on image and style
             db.set(job_dict["id"], json.dumps({"image": None}))
 
-        time.sleep(float(os.environ.get("PROCESSOR_SLEEP")))
+        time.sleep(0.1)
 
 
 if __name__ == "__main__":

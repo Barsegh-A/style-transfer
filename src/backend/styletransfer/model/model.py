@@ -7,7 +7,6 @@ from glob import glob
 
 # For Image reading and visualization
 import matplotlib.pyplot as plt
-import cv2
 from PIL import Image
 
 # For Image Optimization

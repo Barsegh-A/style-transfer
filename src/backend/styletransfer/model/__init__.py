@@ -1,0 +1,1 @@
+from styletransfer.model.model import style_transfer
