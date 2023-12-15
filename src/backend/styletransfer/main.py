@@ -2,8 +2,11 @@ import base64
 import json
 import os
 import time
+import numpy as np
 
 import redis
+
+from glob import glob
 from dotenv import load_dotenv
 from io import BytesIO
 from PIL import Image
@@ -33,6 +36,8 @@ def pil_to_base64_with_data_uri(pil_image):
 
 
 def main():
+    style_dir = "./style_images/"
+
     while True:
         with db.pipeline() as pipe:
             pipe.lrange("job_queue", 0, 1)
@@ -43,7 +48,11 @@ def main():
             job_dict = json.loads(job.decode("utf-8"))
             image = decode_base64_to_pil(job_dict["image"])
             style = job_dict["style"]
-            style_image = image # TODO read style_image based on style
+
+            style_filenames = glob(os.path.join(style_dir, style, '*'))
+            style_filename = np.random.choice(style_filenames)
+            style_image = Image.open(style_filename)
+
             print('Processing started...')
             result = style_transfer(image, style_image)
             print('Processing finished...')
