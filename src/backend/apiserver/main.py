@@ -13,7 +13,7 @@ from pydantic import BaseModel
 load_dotenv()
 
 app = FastAPI()
-db = redis.StrictRedis(host="localhost")
+db = redis.StrictRedis(host=os.environ.get("REDIS_HOST", "localhost"))
 
 origins = [
     "http://localhost:3000",  # Add your frontend URL here

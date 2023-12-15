@@ -6,11 +6,19 @@ services:
       - redis
     networks:
       - app-network
+    environment:
+      - REDIS_HOST=redis
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "8000:8000"
 
   queue_processor:
     build: ./styletransfer
     depends_on:
       - redis
+    environment:
+      - REDIS_HOST=redis
     networks:
       - app-network
 

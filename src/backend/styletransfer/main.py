@@ -15,7 +15,7 @@ from model import style_transfer
 
 load_dotenv()
 
-db = redis.StrictRedis(host="localhost")
+db = redis.StrictRedis(host=os.environ.get("REDIS_HOST", "localhost"))
 
 
 def decode_base64_to_pil(base64_string):
@@ -39,24 +39,28 @@ def main():
     style_dir = "./style_images/"
 
     while True:
-        with db.pipeline() as pipe:
-            pipe.lrange("job_queue", 0, 1)
-            pipe.ltrim("job_queue", 1, -1)
-            queue, _ = pipe.execute()
+        try:
+            with db.pipeline() as pipe:
+                pipe.lrange("job_queue", 0, 1)
+                pipe.ltrim("job_queue", 1, -1)
+                queue, _ = pipe.execute()
 
-        for job in queue:
-            job_dict = json.loads(job.decode("utf-8"))
-            image = decode_base64_to_pil(job_dict["image"])
-            style = job_dict["style"]
+            for job in queue:
+                job_dict = json.loads(job.decode("utf-8"))
+                image = decode_base64_to_pil(job_dict["image"])
+                style = job_dict["style"]
 
-            style_filenames = glob(os.path.join(style_dir, style, '*'))
-            style_filename = np.random.choice(style_filenames)
-            style_image = Image.open(style_filename)
+                style_filenames = glob(os.path.join(style_dir, style, '*'))
+                style_filename = np.random.choice(style_filenames)
+                style_image = Image.open(style_filename)
 
-            print('Processing started...')
-            result = style_transfer(image, style_image)
-            print('Processing finished...')
-            db.set(job_dict["id"], json.dumps({"image": pil_to_base64_with_data_uri(result)}))
+                print('Processing started...')
+                result = style_transfer(image, style_image)
+                print('Processing finished...')
+                db.set(job_dict["id"], json.dumps({"image": pil_to_base64_with_data_uri(result)}))
+        except:
+            # TODO Error handling
+            pass
 
         time.sleep(0.1)
 
