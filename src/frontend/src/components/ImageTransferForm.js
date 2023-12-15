@@ -17,14 +17,19 @@ const ImageTransferForm = () => {
 
     const onFinish = async (values) => {
         setIsModalOpen(true);
-        const formData = new FormData();
+        const formData = {};
 
         Object.keys(values).forEach(key => {
-            formData.append(key, values[key]);
+            formData[key] = values[key];
         });
-        const { data: job } = await axios.post(`${API_ROOT}/submit_job`, formData);
+
+        console.log(formData)
+
+        const { data: job } = await axios.post(`${API_ROOT}/submit_job/`, formData, {
+            mode: 'cors',
+        });
         const intervalId = setInterval(async () => {
-            const { data } = await axios.get(`${API_ROOT}/job?job_id=${job.jobId}`);
+            const { data } = await axios.get(`${API_ROOT}/job?job_id=${job.id}/`);
             const { status, image, progress } = data;
             //request to API
             if (status === 'finished') {

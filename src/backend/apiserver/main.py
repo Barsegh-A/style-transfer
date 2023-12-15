@@ -7,6 +7,7 @@ import uuid
 import redis
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 load_dotenv()
@@ -14,10 +15,22 @@ load_dotenv()
 app = FastAPI()
 db = redis.StrictRedis(host="localhost")
 
+origins = [
+    "http://localhost:3000",  # Add your frontend URL here
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 class Reqeust(BaseModel):
-    image: str
     style: str
+    image: str
 
 
 @app.post("/submit_job/")

@@ -39,7 +39,7 @@ const data = [
 const ImageList = ({ form }) => {
     const [style, setStyle] = useState(null);
     const handleClick = (item) => {
-        form.setFieldsValue({ style: item });
+        form.setFieldsValue({ style: item.value });
         setStyle(item.value);
     }
     return (
