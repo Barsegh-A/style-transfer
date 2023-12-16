@@ -11,27 +11,27 @@ const filterOption = (input, option) =>
 const data = [
     {
         title: 'Arshile Gorky',
-        value: 'gorky',
+        value: 'Gorki',
         image: 'https://upload.wikimedia.org/wikipedia/commons/0/0d/%22Agony%22_by_Arshile_Gorky.jpg'
     },
     {
         title: 'Hovhannes Aivazovsky',
-        value: 'aivazovsky',
+        value: 'Aivazovsky',
         image: 'https://upload.wikimedia.org/wikipedia/commons/4/4a/Hovhannes_Aivazovsky_-_The_Ninth_Wave_-_Google_Art_Project.jpg'
     },
     {
         title: 'Martiros Saryan',
-        value: 'saryan',
+        value: 'Saryan',
         image: 'https://uploads0.wikiart.org/images/martiros-saryan/mottled-landscape-1924.jpg!Large.jpg'
     },
     {
         title: 'Minas Avetisyan',
-        value: 'minas',
+        value: 'Minas',
         image: 'https://media.sketchfab.com/models/8507f4b42fa64460b161141ad8bdafb1/thumbnails/26b4374259e84b0e909613341d420e61/d1d87ccff4b2494dabbf55da324146d6.jpeg'
     },
     {
         title: 'Vardges Surenyants',
-        value: 'vardges',
+        value: 'Sureniants',
         image: 'https://upload.wikimedia.org/wikipedia/commons/e/ec/Shamiram_ara.jpeg'
     },
 ];

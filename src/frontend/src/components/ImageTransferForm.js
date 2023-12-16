@@ -29,7 +29,7 @@ const ImageTransferForm = () => {
             mode: 'cors',
         });
         const intervalId = setInterval(async () => {
-            const { data } = await axios.get(`${API_ROOT}/job?job_id=${job.id}/`);
+            const { data } = await axios.get(`${API_ROOT}/job?job_id=${job.id}`);
             const { status, image, progress } = data;
             //request to API
             if (status === 'finished') {
@@ -94,7 +94,7 @@ const ImageTransferForm = () => {
     </Form>
         {transferredImage ? <Image
             width={200} // Set the width as needed
-            src={`data:image/jpeg;base64,${transferredImage}`} // Prefix with the correct MIME type
+            src={transferredImage} // Prefix with the correct MIME type
         /> : null}
     {/*<LoadingModal open={isModalOpen} progress={progress}/>*/}
     </>)
