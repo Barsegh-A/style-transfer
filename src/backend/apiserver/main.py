@@ -17,6 +17,8 @@ db = redis.StrictRedis(host=os.environ.get("REDIS_HOST", "localhost"))
 
 origins = [
     "http://localhost:3000",  # Add your frontend URL here
+    "http://localhost",
+    "http://0.0.0.0"
 ]
 
 app.add_middleware(

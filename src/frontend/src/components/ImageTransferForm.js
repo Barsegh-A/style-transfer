@@ -38,7 +38,7 @@ const ImageTransferForm = () => {
             } else {
                 setProgress(progress);
             }
-        }, 1000);
+        }, 3000);
 
         return () => {
             if (intervalId) {
