@@ -59,6 +59,11 @@ resource "google_compute_instance" "ml-instance" {
         sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
     sudo apt-get update
     sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    sudo groupadd docker
+    sudo gpasswd -a $USER docker
+    sudo gpasswd -a jenkins docker
+    sudo service docker restart
+    sudo systemctl restart jenkins
   EOF
 
   scheduling {

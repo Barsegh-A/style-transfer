@@ -21,6 +21,14 @@ services:
       - REDIS_HOST=redis
     networks:
       - app-network
+    # comment this if your device doesn't have nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
 
   redis:
     image: "redis:latest"
