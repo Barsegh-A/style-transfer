@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { message, Upload } from 'antd';
+import { LoadingOutlined, InboxOutlined } from '@ant-design/icons';
+import { message, Upload, Row, Col } from 'antd';
+
+const { Dragger } = Upload
 
 const getBase64 = (img, callback) => {
     const reader = new FileReader();
@@ -41,25 +43,24 @@ const ImageUpload = ({form}) => {
 
     const uploadButton = (
         <div>
-            {loading ? <LoadingOutlined /> : <PlusOutlined />}
-            <div style={{ marginTop: 8 }}>Upload</div>
+            {loading ? <LoadingOutlined /> : <p className="ant-upload-drag-icon"><InboxOutlined /></p>}
+            <p className="ant-upload-text" style={{padding: '20px'}}>Click or drag file to this area to upload</p>
         </div>
     );
 
     return (
-        <>
-            <Upload
+            <Dragger
                 name="avatar"
                 listType="picture-card"
                 showUploadList={false}
-                action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                customRequest={(file) => file.onSuccess()}
                 beforeUpload={beforeUpload}
                 onChange={handleChange}
                 accept={'image/*'}
+                style={{minWidth: 0}}
             >
-                {imageUrl ? <img src={imageUrl} style={{ width: '200px', height: '200px' }} /> : uploadButton}
-            </Upload>
-        </>
+                {imageUrl ? <img src={imageUrl} style={{ minWidth: 0, maxHeight: '400px', maxWidth: '400px' }} /> : uploadButton}
+            </Dragger>
     );
 };
 

@@ -1,12 +1,5 @@
-import React, {useState} from 'react';
-import { Select, List, Card } from 'antd';
-
-const onChange = (value) => {
-    console.log(`selected ${value}`);
-};
-
-const filterOption = (input, option) =>
-(option?.label ?? '').toLowerCase().includes(input.toLowerCase());
+import React from 'react';
+import { List, Card } from 'antd';
 
 const data = [
     {
@@ -36,8 +29,7 @@ const data = [
     },
 ];
 
-const ImageList = ({ form }) => {
-    const [style, setStyle] = useState(null);
+const ImageList = ({ form, style, setStyle }) => {
     const handleClick = (item) => {
         form.setFieldsValue({ style: item.value });
         setStyle(item.value);
@@ -45,20 +37,22 @@ const ImageList = ({ form }) => {
     return (
         <>
             <List
-                grid={{
-                    gutter: 3,
-                    xs: 3,
-                    sm: 3,
-                    md: 3,
-                    lg: 3,
-                    xl: 3,
-                    xxl: 3,
-                }}
+                grid={{gutter: 5}}
                 dataSource={data}
                 renderItem={(item) => (
                     <List.Item onClick={() => handleClick(item)} style={{cursor: 'pointer'}}>
-                        <Card title={item.title} size={'large'} style={{backgroundColor: (item.value === style ? '#eee' : 'transparent'), borderColor: '#001529'}}>
-                            <img src={item.image} alt={item.title} style={{ width: '200px', height: '200px' }} />
+                        <Card
+                            title={item.title}
+                            size={'large'}
+                            style={{
+                                backgroundColor: (item.value === style ? '#eee' : 'transparent'),
+                                borderColor: '#001529',
+                            }}
+                            bodyStyle={{
+                                padding: '6px 20px'
+                            }}
+                        >
+                            <img src={item.image} alt={item.title} style={{ width: '170px', height: '80px' }} />
                         </Card>
                     </List.Item>
                 )}
