@@ -1,7 +1,7 @@
 version: '3'
 services:
   request_handler:
-    build: ./apiserver
+    build: ./src/backend/apiserver
     depends_on:
       - redis
     networks:
@@ -14,7 +14,7 @@ services:
       - "8000:8000"
 
   queue_processor:
-    build: ./styletransfer
+    build: ./src/backend/styletransfer
     depends_on:
       - redis
     environment:
@@ -38,6 +38,17 @@ services:
       - redis-data:/data  # persistent storage for Redis
     networks:
       - app-network
+
+  frontend:
+    build: ./src/frontend
+    depends_on:
+      - request_handler
+    networks:
+      - app-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "80:80"
 
 networks:
   app-network:

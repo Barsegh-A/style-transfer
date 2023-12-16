@@ -1,5 +1,5 @@
 provider "google" {
-  credentials = file("../../../ysu-style-transfer-a5426f7b2aa2.json")
+  credentials = file("../ysu-style-transfer-a5426f7b2aa2.json")
   project     = "ysu-style-transfer"
   region      = "europe-west3"
 }
