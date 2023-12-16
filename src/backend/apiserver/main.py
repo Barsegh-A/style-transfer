@@ -15,12 +15,7 @@ load_dotenv()
 app = FastAPI()
 db = redis.StrictRedis(host=os.environ.get("REDIS_HOST", "localhost"))
 
-origins = [
-    "http://localhost:3000",  # Add your frontend URL here
-    "http://localhost",
-    "http://0.0.0.0",
-    "http://35.198.70.137/"
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
