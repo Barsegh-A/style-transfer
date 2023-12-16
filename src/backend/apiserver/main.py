@@ -19,7 +19,7 @@ origins = [
     "http://localhost:3000",  # Add your frontend URL here
     "http://localhost",
     "http://0.0.0.0",
-    "http://35.198.70.137"
+    "http://35.198.70.137/"
 ]
 
 app.add_middleware(
