@@ -1,5 +1,6 @@
 import base64
 import json
+import logging
 import os
 import time
 import numpy as np
@@ -16,6 +17,7 @@ from model import style_transfer
 load_dotenv()
 
 db = redis.StrictRedis(host=os.environ.get("REDIS_HOST", "localhost"))
+QUEUE_NAME = "job_queue"
 
 
 def decode_base64_to_pil(base64_string):
@@ -41,12 +43,15 @@ def main():
     while True:
         try:
             with db.pipeline() as pipe:
-                pipe.lrange("job_queue", 0, 1)
-                pipe.ltrim("job_queue", 1, -1)
+                pipe.lrange(QUEUE_NAME, 0, 1)
+                pipe.ltrim(QUEUE_NAME, 1, -1)
                 queue, _ = pipe.execute()
 
             for job in queue:
                 job_dict = json.loads(job.decode("utf-8"))
+
+                db.set(job_dict["id"], json.dumps({"status": "processing", "image": None}))
+
                 image = decode_base64_to_pil(job_dict["image"])
                 style = job_dict["style"]
 
@@ -54,13 +59,13 @@ def main():
                 style_filename = np.random.choice(style_filenames)
                 style_image = Image.open(style_filename)
 
-                print('Processing started...')
+                logging.info('Style Transfer processing started...')
                 result = style_transfer(image, style_image)
-                print('Processing finished...')
-                db.set(job_dict["id"], json.dumps({"image": pil_to_base64_with_data_uri(result)}))
-        except:
-            # TODO Error handling
-            pass
+                logging.info('Style Transfer processing finished.')
+                db.set(job_dict["id"], json.dumps({"status": "finished", "image": pil_to_base64_with_data_uri(result)}))
+        except Exception as e:
+            logging.error(str(e))
+            db.set(job_dict["id"], json.dumps({"status": "failed", "image": None}))
 
         time.sleep(0.1)
 
