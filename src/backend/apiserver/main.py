@@ -14,6 +14,7 @@ load_dotenv()
 
 app = FastAPI()
 db = redis.StrictRedis(host=os.environ.get("REDIS_HOST", "localhost"))
+QUEUE_NAME = "job_queue"
 
 origins = ["*"]
 
@@ -36,8 +37,9 @@ async def create_item(req: Reqeust):
     req_dict = req.dict()
     job_id = str(uuid.uuid4())
     job_dict = {"id": job_id, "image": req_dict["image"], "style": req_dict["style"]}
-    db.rpush("job_queue", json.dumps(job_dict))
-    data = {"status": "submitted", "id": job_id}
+    db.rpush(QUEUE_NAME, json.dumps(job_dict))
+    queue_length = db.llen(QUEUE_NAME)
+    data = {"status": "submitted", "id": job_id, "queue_length": queue_length}
     return data
 
 
@@ -47,6 +49,6 @@ async def read_item(job_id: str):
     if output is not None:
         output_dict = json.loads(output.decode("utf-8"))
         # db.delete(job_id)
-        return {"status": "finished", "image": output_dict["image"]}
+        return {"status": output_dict["status"], "image": output_dict["image"]}
     else:
-        return {"status": "processing"}
+        return {"status": "queued", "image": None}
