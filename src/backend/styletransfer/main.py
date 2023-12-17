@@ -37,6 +37,20 @@ def pil_to_base64_with_data_uri(pil_image):
     return data_uri
 
 
+def resize_to_max_side(image, max_side_length=768):
+    if max(image.width, image.height) < max_side_length:
+        return image
+    aspect_ratio = image.width / image.height
+    if image.width > image.height:
+        new_width = max_side_length
+        new_height = int(max_side_length / aspect_ratio)
+    else:
+        new_height = max_side_length
+        new_width = int(max_side_length * aspect_ratio)
+    resized_image = image.resize((new_width, new_height), Image.BICUBIC)
+    return resized_image
+
+
 def main():
     style_dir = "./style_images/"
 
@@ -53,6 +67,8 @@ def main():
                 db.set(job_dict["id"], json.dumps({"status": "processing", "image": None}))
 
                 image = decode_base64_to_pil(job_dict["image"])
+                orig_width, orig_height = image.width, image.height
+                resized_image = resize_to_max_side(image)
                 style = job_dict["style"]
 
                 style_filenames = glob(os.path.join(style_dir, style, '*'))
@@ -60,8 +76,11 @@ def main():
                 style_image = Image.open(style_filename)
 
                 logging.info('Style Transfer processing started...')
-                result = style_transfer(image, style_image)
+                result = style_transfer(resized_image, style_image)
                 logging.info('Style Transfer processing finished.')
+
+                result = result.resize((orig_width, orig_height), Image.BICUBIC)
+
                 db.set(job_dict["id"], json.dumps({"status": "finished", "image": pil_to_base64_with_data_uri(result)}))
         except Exception as e:
             logging.error(str(e))
