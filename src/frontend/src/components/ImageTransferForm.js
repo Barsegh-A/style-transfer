@@ -20,6 +20,7 @@ const ImageTransferForm = () => {
     const onFinish = async (values) => {
         setIsModalOpen(true);
         setStatus('queued')
+        setTransferredImage(null)
         const formData = {};
 
         Object.keys(values).forEach(key => {
@@ -84,7 +85,7 @@ const ImageTransferForm = () => {
                 <Col span={9} order={3}>
                     <Form.Item
                         label={<span style={{ fontSize: '18px' }}>Result</span>}
-                        style={{ fontSize: '18px', boxSizing: 'border-box', height: '400px' }}
+                        style={{ fontSize: '18px', boxSizing: 'border-box', maxHeight: '400px' }}
                     >
                         {transferredImage ? <Image
                             style={{ maxHeight: '400px', maxWidth: '400px' }}
@@ -111,7 +112,7 @@ const ImageTransferForm = () => {
                         <Form.Item
                             name="image"
                             label={<span style={{ fontSize: '18px' }}>Your Photo</span>}
-                            style={{ fontSize: '18px', boxSizing: 'border-box', height: '400px' }}
+                            style={{ fontSize: '18px', boxSizing: 'border-box', maxHeight: '400px' }}
                         >
                             <ImageUpload form={form} />
                         </Form.Item>
@@ -123,7 +124,7 @@ const ImageTransferForm = () => {
                     <Col span={22}>
                         <Form.Item
                             label={<span style={{ fontSize: '18px' }}>Side-by-side comparison</span>}
-                            style={{ fontSize: '18px', boxSizing: 'border-box', height: '400px', padding: '100px' }}
+                            style={{ fontSize: '18px', boxSizing: 'border-box', width: '400px', margin: '50px auto 30px auto' }}
                         >
                             <ReactCompareImage leftImage={originalImage} rightImage={transferredImage} />
                         </Form.Item>
