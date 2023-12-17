@@ -19,7 +19,7 @@ Welcome to the Armenian Painter Style Transfer Application! This innovative tool
 - **Terraform:** Terraform is required for automating the deployment of infrastructure. To install Terraform, follow the guidelines on [Terraform's official website](https://www.terraform.io/downloads.html).
 
 ### Infrastructure
-To set up the infrastructure place `ysu-style-transfer-a5426f7b2aa2.json` GCP service account file in the parent directory and run
+To set up the infrastructure modify the path to GCP service account file in `main.tf` credentials field accordingly and run
 
 ```
 terraform init
